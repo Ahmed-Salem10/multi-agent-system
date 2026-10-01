@@ -18,3 +18,5 @@ docling
 docx2txt
 pypdf
 sentence_transformers
+rank_bm25
+faiss-cpu
