@@ -1,10 +1,11 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+from langchain_core.embeddings import Embeddings
 
-@abstractmethod
-class BaseEmbedding(ABC):
+
+class BaseEmbedding(Embeddings):
     @abstractmethod
-    def embed_document(self, document: str) -> list[list[float]]:
-        """Embed a document into a vector representation."""
+    def embed_documents(self, documents: list[str]) -> list[list[float]]:
+        """Embed a list of documents into vector representations."""
         pass
 
     @abstractmethod

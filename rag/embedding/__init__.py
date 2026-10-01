@@ -1,7 +1,8 @@
 from .base import BaseEmbedding
-from .huggingface import HuggingFaceEmbedding
+from .gemini import GeminiEmbedding
+
 
 __all__ = [
     "BaseEmbedding",
-    "HuggingFaceEmbedding",
+    "GeminiEmbedding",
 ]
