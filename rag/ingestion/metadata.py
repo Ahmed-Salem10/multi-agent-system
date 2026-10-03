@@ -1,36 +1,43 @@
 import hashlib
 import time
 
+from langchain_core.documents import Document
+
 
 def compute_text_hash(text: str) -> str:
-    """Create a stable SHA-256 hash from the text."""
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+    return hashlib.sha256(
+        text.encode("utf-8")
+    ).hexdigest()
 
 
 def enrich_metadata(
-    documents: list[dict],
-    extra: dict | None = None
-) -> list[dict]:
+    documents: list[Document],
+    extra: dict | None = None,
+) -> list[Document]:
 
     extra = extra or {}
+
     enriched = []
 
     for doc in documents:
-        text = doc.get("text", "")
+
+        text = doc.page_content
 
         metadata = {
-            **doc.get("metadata", {}),
-            **extra
+            **doc.metadata,
+            **extra,
         }
 
-        metadata["content_hash"] = compute_text_hash(text)
+        metadata["doc_id"] = compute_text_hash(text)
         metadata["word_count"] = len(text.split())
         metadata["char_count"] = len(text)
         metadata["ingested_at"] = int(time.time())
 
-        enriched.append({
-            "text": text,
-            "metadata": metadata
-        })
+        enriched.append(
+            Document(
+                page_content=text,
+                metadata=metadata,
+            )
+        )
 
     return enriched
