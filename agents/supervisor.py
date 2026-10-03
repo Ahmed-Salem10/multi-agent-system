@@ -71,6 +71,9 @@ Choose ONLY the next agent.
     }
 
 
+def route_next_agent(state: State) -> str:
+    return state["next_agent"]
+
 
 
 
