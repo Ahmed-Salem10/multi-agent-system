@@ -12,10 +12,9 @@ llm = ChatGroq(
 def final_agent(state: State):
 
     user_request = state["user_request"]
-
-    rag_result = state["rag_result"]
-    research_result = state["research_result"]
-    analysis = state["analysis_result"]
+    rag_result = state.get("rag_result", "")
+    research_result = state.get("research_result", "")
+    analysis = state.get("analysis_result", "")
 
     final_context = f"""
 RAG information:

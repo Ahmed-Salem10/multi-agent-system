@@ -4,7 +4,7 @@ from tools.research import research_tool
 
 def research_agent(state: State):
 
-    user_request = state["user_request"]
+    user_request = state.get("user_request","")
 
     result = research_tool.invoke({
         "query": user_request

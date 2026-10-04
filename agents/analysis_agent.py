@@ -4,7 +4,7 @@ from agents.supervisor import State
 
 
 llm = ChatGroq(
-    model="qwen/qwen3-32b",
+    model="openai/gpt-oss-120b",
     temperature=0,
 )
 
@@ -12,8 +12,8 @@ llm = ChatGroq(
 def analysis_agent(state: State):
 
     user_request = state["user_request"]
-    rag_result = state["rag_result"]
-    research_result = state["research_result"]
+    rag_result = state.get("rag_result", "")
+    research_result = state.get("research_result", "")
 
     response = llm.invoke(
         f"""

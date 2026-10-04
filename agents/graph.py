@@ -14,7 +14,7 @@ from agents.final_agent import final_agent
 from rag.pipeline.generation_pipeline import create_rag_pipeline
 
 
-def build_graph(chunks):
+def build_graph():
     """
     Build the multi-agent graph.
 
@@ -23,7 +23,7 @@ def build_graph(chunks):
     """
 
     # Build RAG once
-    rag = create_rag_pipeline(chunks)
+    rag = create_rag_pipeline()
 
     # Create RAG agent using the existing RAG pipeline
     rag_agent = create_rag_agent(rag)
