@@ -16,7 +16,7 @@ def final_agent(state: State):
     research_result = state.get("research_result", "")
     analysis = state.get("analysis_result", "")
 
-    final_context = f"""
+    final_context = analysis if analysis else f"""
 RAG information:
 {rag_result}
 

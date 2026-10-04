@@ -7,7 +7,7 @@ tavily=TavilySearch()
 def research_tool(query:str)->str:
     """search web for relevant information """
     try:
-        raw=tavily.search(query)
+        raw=tavily.invoke(query)
         trimmed=[{"title":r.get("title",""),
                   "url":r.get("url",""),
                   "content":r.get("content","")}

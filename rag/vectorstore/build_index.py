@@ -3,7 +3,7 @@ from rag.chunking.chunking_pipeline import ingest_document
 from rag.embedding.gemini import LocalEmbedding
 from rag.vectorstore.faiss_store import VectorStore
 
-DATA_PATH = Path(r"C:\Users\LOQ\Downloads\Agentic_Design_Patterns.pdf")
+DATA_PATH = Path(r"C:\Users\LOQ\Downloads\NASA")
 
 if DATA_PATH.is_dir():
     files = [

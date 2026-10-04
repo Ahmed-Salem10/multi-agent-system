@@ -13,18 +13,20 @@ class RoutingDecision(BaseModel):
 
 class State(TypedDict):
     user_request:str
-    next_agent:str
+    next_agent:List[str]
     rag_result:str
     research_result:str
     analysis_result:str
     result:str
     final_context:str
+    steps:int
 
 
 base_llm=ChatGroq(
     model="openai/gpt-oss-120b",temperature=0)
 
 router=base_llm.with_structured_output(RoutingDecision)
+MAX_STEPS=5
 
 def supervisor(state: State):
 
@@ -32,6 +34,12 @@ def supervisor(state: State):
     rag_result = state.get("rag_result", "")
     research_result = state.get("research_result", "")
     analysis = state.get("analysis_result", "")
+    steps=state.get("steps",0) + 1
+
+
+    if steps > MAX_STEPS:
+            return {"next_agent":["final"],"steps":steps}
+
 
     decision = router.invoke(
         f"""
@@ -71,6 +79,7 @@ Choose ONLY the next agent.
 
     return {
         "next_agent": decision.next_agent
+        ,"steps":steps
     }
 
 
