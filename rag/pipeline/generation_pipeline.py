@@ -1,4 +1,4 @@
-from rag.embedding.gemini import GeminiEmbedding
+from rag.embedding.gemini import LocalEmbedding
 from rag.vectorstore.faiss_store import VectorStore
 
 from rag.retriever.vectorsearch import vector_search
@@ -12,7 +12,7 @@ from rag.generation.rag_chain import RAGChain
 def create_rag_pipeline(documents):
 
     # 1. Embeddings
-    embeddings = GeminiEmbedding()
+    embeddings = LocalEmbedding()
 
     # 2. Vector Store
     vector_store = VectorStore(embeddings)

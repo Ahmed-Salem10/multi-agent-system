@@ -12,7 +12,7 @@ llm = ChatGroq(
 def analysis_agent(state: State):
 
     user_request = state["user_request"]
-    rag_result = state["rag"]
+    rag_result = state["rag_result"]
     research_result = state["research_result"]
 
     response = llm.invoke(
@@ -40,5 +40,5 @@ Tasks:
     )
 
     return {
-        "analysis": response.content
+        "analysis_result": response.content
     }

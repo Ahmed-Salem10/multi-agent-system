@@ -1,67 +1,26 @@
-import os
-
-from dotenv import load_dotenv
-from google import genai
-from google.genai import types
+from sentence_transformers import SentenceTransformer
 
 from .base import BaseEmbedding
 
 
-load_dotenv()
-
-
-class GeminiEmbedding(BaseEmbedding):
+class LocalEmbedding(BaseEmbedding):
 
     def __init__(
         self,
-        model_name: str = "gemini-embedding-001",
-        output_dimensionality: int = 768,
+        model_name: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
     ):
-        api_key = os.getenv("GEMINI_API_KEY")
+        self.model = SentenceTransformer(model_name)
 
-        if not api_key:
-            raise ValueError(
-                "GEMINI_API_KEY is not set in the environment."
-            )
+    def embed_documents(self, documents: list[str]) -> list[list[float]]:
+        return self.model.encode(
+            documents,
+            batch_size=32,
+            show_progress_bar=True,
+            normalize_embeddings=True,
+        ).tolist()
 
-        self.client = genai.Client(
-            api_key=api_key
-        )
-
-        self.model_name = model_name
-        self.output_dimensionality = output_dimensionality
-
-    def embed_documents(
-        self,
-        documents: list[str],
-    ) -> list[list[float]]:
-
-        result = self.client.models.embed_content(
-            model=self.model_name,
-            contents=documents,
-            config=types.EmbedContentConfig(
-                task_type="RETRIEVAL_DOCUMENT",
-                output_dimensionality=self.output_dimensionality,
-            ),
-        )
-
-        return [
-            embedding.values
-            for embedding in result.embeddings
-        ]
-
-    def embed_query(
-        self,
-        query: str,
-    ) -> list[float]:
-
-        result = self.client.models.embed_content(
-            model=self.model_name,
-            contents=query,
-            config=types.EmbedContentConfig(
-                task_type="RETRIEVAL_QUERY",
-                output_dimensionality=self.output_dimensionality,
-            ),
-        )
-
-        return result.embeddings[0].values
+    def embed_query(self, query: str) -> list[float]:
+        return self.model.encode(
+            query,
+            normalize_embeddings=True,
+        ).tolist()

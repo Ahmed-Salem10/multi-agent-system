@@ -2,6 +2,9 @@ from typing import TypedDict,List,Literal
 from pydantic import BaseModel,Field
 from langchain_groq import ChatGroq
 from langchain.messages import SystemMessage,HumanMessage,AIMessage
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class RoutingDecision(BaseModel):
     next_agent:List[Literal["rag","research","analysis","final"]]=Field(...,description="The next agent to route the query to. It can be one of 'rag', 'research', or 'analysis'.")
@@ -19,7 +22,7 @@ class State(TypedDict):
 
 
 base_llm=ChatGroq(
-    model="qwen/qwen3-32b",temperature=0)
+    model="openai/gpt-oss-120b",temperature=0)
 
 router=base_llm.with_structured_output(RoutingDecision)
 

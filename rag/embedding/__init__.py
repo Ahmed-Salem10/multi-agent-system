@@ -1,8 +1,8 @@
 from .base import BaseEmbedding
-from .gemini import GeminiEmbedding
+from .gemini import LocalEmbedding
 
 
 __all__ = [
     "BaseEmbedding",
-    "GeminiEmbedding",
+    "LocalEmbedding",
 ]

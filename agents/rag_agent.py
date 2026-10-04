@@ -13,7 +13,7 @@ def create_rag_agent(rag):
         })
 
         return {
-            "rag": result
+            "rag_result": result
         }
 
     return rag_agent
