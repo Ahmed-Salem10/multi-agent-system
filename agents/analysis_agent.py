@@ -5,7 +5,7 @@ from agents.supervisor import State
 
 llm = ChatGroq(
     model="openai/gpt-oss-120b",
-    temperature=0,
+    temperature=0,reasoning_effort="low",max_tokens=1000
 )
 
 

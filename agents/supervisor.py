@@ -25,7 +25,9 @@ class State(TypedDict):
 base_llm=ChatGroq(
     model="openai/gpt-oss-120b",temperature=0)
 
-router=base_llm.with_structured_output(RoutingDecision)
+llm=ChatGroq(model="openai/gpt-oss-120b",temperature=0,reasoning_effort="low")
+
+router=llm.with_structured_output(RoutingDecision,method="json_schema")
 MAX_STEPS=5
 
 def supervisor(state: State):
@@ -46,6 +48,8 @@ def supervisor(state: State):
 You are the supervisor of a multi-agent AI system.
 
 Your job is to decide which agent should execute next.
+
+if the user request was on mars or space chech rag first and if you havenot any result then check others
 
 Available agents:
 

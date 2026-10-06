@@ -68,7 +68,7 @@ def build_graph():
 
     builder.add_edge("rag", "supervisor")
     builder.add_edge("research", "supervisor")
-    builder.add_edge("analysis", "supervisor")
+    builder.add_edge("analysis", "final")
 
     # ----------------
     # Final → END
