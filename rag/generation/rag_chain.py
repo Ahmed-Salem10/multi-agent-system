@@ -29,4 +29,27 @@ class RAGChain:
         # 4. Ask LLM
         response = self.llm.invoke(messages)
 
-        return response.content
+        citations = []
+
+        for i, document in enumerate(documents, start=1):
+
+            citations.append(
+                {
+                    "id": i,
+                    "source": document.metadata.get(
+                        "source",
+                        "Unknown"
+                    ),
+                    "page": document.metadata.get(
+                        "page",
+                        "Unknown"
+                    ),
+                    "chunk_index": document.metadata.get(
+                        "chunk_index",
+                        None
+                    ),
+                }
+            )
+
+        return {"answer":response.content,
+                "citation":citations}

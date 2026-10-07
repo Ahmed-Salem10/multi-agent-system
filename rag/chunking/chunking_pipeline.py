@@ -4,9 +4,10 @@ from rag.ingestion.loader.pdf_loader import pdf_loader
 from rag.ingestion.cleaner import clean_documents
 from rag.ingestion.metadata import enrich_metadata
 from rag.chunking.recursive_chunking import recursive_document_splitter
+from langchain_core.documents import Document
 
 
-def ingest_document(file_path: str) -> list[dict]:
+def ingest_document(file_path: str) -> list[Document]:
 
     path = Path(file_path)
 

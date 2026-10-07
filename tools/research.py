@@ -12,7 +12,7 @@ def research_tool(query:str)->str:
                   "url":r.get("url",""),
                   "content":r.get("content","")}
                     for r in raw.get("results",[])]
-        return str(trimmed)
+        return trimmed
     except Exception as e:
         return f"Error occurred during Tavily search: {str(e)}"
     
