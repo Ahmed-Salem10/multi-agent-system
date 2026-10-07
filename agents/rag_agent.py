@@ -13,7 +13,8 @@ def create_rag_agent(rag):
         })
 
         return {
-            "rag_result": result
+            "rag_result": result["answer"],
+            "sources": result["citation"]
         }
 
     return rag_agent

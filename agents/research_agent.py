@@ -14,5 +14,12 @@ def research_agent(state: State):
     print()
 
     return {
-        "research_result": result
+        "research_result": result,
+        "sources": [
+    {
+        "title": r.get("title", ""),
+        "url": r.get("url", ""),
+    }
+    for r in result
+    ]
     }

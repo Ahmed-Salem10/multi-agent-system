@@ -1,10 +1,10 @@
-from langchain_groq import ChatGroq
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 from agents.supervisor import State
 
 
-llm = ChatGroq(
-    model="openai/gpt-oss-120b",
+llm = ChatGoogleGenerativeAI(
+    model="gemini-3.5-flash-lite",
     temperature=0,reasoning_effort="low",max_tokens=1000
 )
 

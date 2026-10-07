@@ -1,6 +1,6 @@
 from typing import TypedDict,List,Literal
 from pydantic import BaseModel,Field
-from langchain_groq import ChatGroq
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.messages import SystemMessage,HumanMessage,AIMessage
 from dotenv import load_dotenv
 
@@ -20,12 +20,12 @@ class State(TypedDict):
     result:str
     final_context:str
     steps:int
+    sources:list[str]
 
+base_llm=ChatGoogleGenerativeAI(
+    model="gemini-3.5-flash-lite",temperature=0,max_retries=5)
 
-base_llm=ChatGroq(
-    model="openai/gpt-oss-120b",temperature=0)
-
-llm=ChatGroq(model="openai/gpt-oss-120b",temperature=0,reasoning_effort="low")
+llm=ChatGoogleGenerativeAI(model="gemini-3.5-flash-lite",temperature=0,reasoning_effort="low",max_retries=5)
 
 router=llm.with_structured_output(RoutingDecision,method="json_schema")
 MAX_STEPS=5
@@ -54,7 +54,7 @@ if the user request was on mars or space chech rag first and if you havenot any 
 Available agents:
 
 1. rag
-Use the uploaded documents and internal knowledge base.
+Use the uploaded documents and internal knowledge base. its about space and mars and this things only
 
 2. research
 Search the internet when external or up-to-date information is required.
