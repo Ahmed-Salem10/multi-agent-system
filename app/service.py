@@ -47,6 +47,27 @@ def _ensure_graph():
         init_graph()
 
 
+def _text(content) -> str:
+    """
+    Normalize chunk.content to plain text.
+    Groq/OpenAI return a str, Gemini returns a list of content blocks
+    like [{"type": "text", "text": "..."}].
+    """
+    if isinstance(content, str):
+        return content
+
+    if isinstance(content, list):
+        parts = []
+        for p in content:
+            if isinstance(p, str):
+                parts.append(p)
+            elif isinstance(p, dict) and p.get("type") in (None, "text"):
+                parts.append(p.get("text", ""))
+        return "".join(parts)
+
+    return ""
+
+
 def run_chat(
     question: str,
     history: list[dict],
@@ -68,7 +89,7 @@ def run_chat(
     )
 
     return {
-        "answer": output.get("result", ""),
+        "answer": _text(output.get("result", "")),
         "sources": output.get("sources", []),
     }
 
@@ -101,6 +122,8 @@ def stream_chat(
 
     trace = []
     sources = []
+    streamed_any = False   # هل وصلت توكنز فعلًا للفرونت؟
+    final_answer = ""      # الإجابة الكاملة من node الـ final (fallback)
 
     try:
         # Tell frontend that execution started
@@ -119,17 +142,12 @@ def stream_chat(
                 chunk, meta = data
 
                 # Show tokens only from final node
-                if (
-                    meta.get("langgraph_node") == "final"
-                    and isinstance(chunk.content, str)
-                    and chunk.content
-                ):
-                    yield _sse(
-                        "token",
-                        {
-                            "text": chunk.content,
-                        },
-                    )
+                if meta.get("langgraph_node") == "final":
+                    text = _text(chunk.content)
+
+                    if text:
+                        streamed_any = True
+                        yield _sse("token", {"text": text})
 
                 continue
 
@@ -151,6 +169,10 @@ def stream_chat(
                     # Update sources
                     if update.get("sources"):
                         sources = update["sources"]
+
+                    # Keep the final answer as a fallback
+                    if node == "final" and update.get("result"):
+                        final_answer = _text(update["result"])
 
                     # ==================================
                     # SUPERVISOR
@@ -193,6 +215,12 @@ def stream_chat(
                                 "duration_ms": duration_ms,
                             },
                         )
+
+        # ==========================================
+        # FALLBACK: لو الموديل ما عملش stream
+        # ==========================================
+        if not streamed_any and final_answer:
+            yield _sse("token", {"text": final_answer})
 
         # ==========================================
         # TOOLS USED

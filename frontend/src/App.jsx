@@ -288,6 +288,8 @@ export default function App() {
                 ...m,
                 agents: finished,
                 streaming: false,
+                statusText: "",
+                error: m.content || m.error ? m.error : "ZUES ما رجّعش إجابة. شوف لوج الباك اند.",
                 sources: normalizeList(data.sources),
                 toolsUsed: normalizeList(data.tools_used),
               };

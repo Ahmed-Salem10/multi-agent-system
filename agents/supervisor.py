@@ -3,7 +3,8 @@ from pydantic import BaseModel,Field
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.messages import SystemMessage,HumanMessage,AIMessage
 from dotenv import load_dotenv
-
+from typing import Annotated 
+import operator 
 load_dotenv()
 
 class RoutingDecision(BaseModel):
@@ -15,12 +16,12 @@ class State(TypedDict):
     user_request:str
     next_agent:List[str]
     rag_result:str
-    research_result:str
+    research_result:list[dict]
     analysis_result:str
     result:str
     final_context:str
     steps:int
-    sources:list[str]
+    sources:Annotated[list[str],operator.add]
 
 base_llm=ChatGoogleGenerativeAI(
     model="gemini-3.5-flash-lite",temperature=0,max_retries=5)
