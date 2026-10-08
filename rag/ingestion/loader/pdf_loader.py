@@ -21,7 +21,7 @@ def pdf_loader(file_path:str|Path)->list[dict[str,Any]]:
                 page_content=text,
                 metadata={
                     "file_name":file_path.name,
-                    "file_path":"pdf",
+                    "file_type":"pdf",
                     "page":page.metadata.get("page",0)+1
                 },
             )
