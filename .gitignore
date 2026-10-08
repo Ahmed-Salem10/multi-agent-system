@@ -225,3 +225,7 @@ frontend/dist/
 
 # Local secrets
 .env
+
+node_modules/
+frontend/dist/
+.vite/
