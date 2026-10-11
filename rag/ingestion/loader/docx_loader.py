@@ -12,7 +12,7 @@ def docx_loader(file_path:str|Path)->list[dict[str,Any]]:
         raise ValueError(f"Expected a docx file got :{file_path}")
 
     documents=[]
-    pages=Docx2txtLoader(str(file_path)).load
+    pages=Docx2txtLoader(str(file_path)).load()
 
     for page in pages:
         text=page.page_content.strip()

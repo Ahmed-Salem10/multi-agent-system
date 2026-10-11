@@ -3,7 +3,7 @@ from typing import Any
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_core.documents import Document
 
-def pdf_loader(file_path:str|Path)->list[dict[str,Any]]:
+def pdf_loader(file_path:str|Path)->list[Document]:
     file_path=Path(file_path)
     if not file_path.exists():
         raise FileNotFoundError(f"PDF file not found :{file_path}")
