@@ -62,8 +62,7 @@ pip install -r requirements.txt
 Create a `.env` file in the project root:
 
 ```env
-GEMINI_API_KEY=your_key
-GOOGLE_API_KEY=your_key      # set this too if langchain-google-genai does not pick up GEMINI_API_KEY
+GEMINI_API_KEY=your_key    # set this too if langchain-google-genai does not pick up GEMINI_API_KEY
 COHERE_API_KEY=your_key
 TAVILY_API_KEY=your_key
 ```
